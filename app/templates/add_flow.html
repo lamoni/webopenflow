@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block body %}
+<script src="/static/bower_components/jquery-form/jquery.form.js"></script>
 {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul>
@@ -10,7 +11,7 @@
         </ul>
       {% endif %}
     {% endwith %}
-<form class="form" action="/api/add_flow" method="POST" role="form">
+<form id="formAddFlow" class="form" action="/api/add_flow" method="POST" role="form">
     {{ form.hidden_tag() }}
 
     <div class="form-group">
@@ -50,5 +51,43 @@
 
     <button type="submit" class="btn btn-success">Add</button>
     <button type="reset" class="btn btn-danger">Reset</button>
+
+    <div class="alert alert-success" id="alertSuccess" style="display:none;">
+
+    </div>
+    <div class="alert alert-danger" id="alertDanger" style="display:none;">
+
+    </div>
 </form>
+<script>
+    $(document).ready(function() {
+        $('#formAddFlow').submit(function(e) {
+            e.preventDefault();
+            var options = {
+                type: 'POST',
+                dataType: 'json',
+                success:       showResponse,
+                resetForm: true
+            };
+
+
+            $(this).ajaxSubmit(options);
+
+            return false;
+        });
+
+
+        function showResponse(data) {
+            if (data.error == 1) {
+                $('#alertSuccess').html('').hide();
+                $('#alertDanger').html(data.message).show();
+                return false;
+            }
+
+                $('#alertDanger').html('').hide();
+                $('#alertSuccess').html(data.message).show();
+
+        }
+    });
+</script>
 {% endblock %}
