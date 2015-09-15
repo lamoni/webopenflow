@@ -8,13 +8,13 @@ import requests
 def index():
 
     r = requests.get(
-            'http://'+app.config['ODL_SERVER_IP']+':'+app.config['ODL_SERVER_PORT']+'/restconf/config/opendaylight-inventory:nodes/',
-            headers={
-                'accept': 'application/json',
-                'content-type': 'application/xml'
-             },
-             auth=(app.config['ODL_USERNAME'], app.config['ODL_PASSWORD'])
-        )
+        'http://'+app.config['ODL_SERVER_IP']+':'+app.config['ODL_SERVER_PORT']+'/restconf/config/opendaylight-inventory:nodes/',
+        headers={
+            'accept': 'application/json',
+            'content-type': 'application/xml'
+         },
+         auth=(app.config['ODL_USERNAME'], app.config['ODL_PASSWORD'])
+    )
 
     return render_template(
         'index.html',
