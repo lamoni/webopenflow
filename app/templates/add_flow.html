@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block body %}
+{% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }} </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+<form class="form" action="/api/add_flow" method="POST" role="form">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        <label>Flow ID</label>
+        <input name="flow_id" class="form-control" placeholder="ID">
+    </div>
+
+    <div class="form-group">
+        <label>Priority</label>
+        <select name="flow_priority" class="form-control">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Destination Prefix</label>
+        <input name="flow_destination_prefix" class="form-control" placeholder="IPv4 Prefix">
+    </div>
+
+    <div class="form-group">
+        <label>Table ID</label>
+        <select name="flow_table_id" class="form-control">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    </div>
+
+
+    <button type="submit" class="btn btn-success">Add</button>
+    <button type="reset" class="btn btn-danger">Reset</button>
+</form>
+{% endblock %}

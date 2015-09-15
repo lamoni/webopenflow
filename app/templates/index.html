@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+<!-- DataTables CSS -->
+<link href="/static/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+
+<!-- DataTables Responsive CSS -->
+<link href="/static/bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
+
+<!-- DataTables JavaScript -->
+<script src="/static/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="/static/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+
+
+    <script>
+    $(document).ready(function() {
+        $('#dataTables').DataTable({
+                responsive: true
+        });
+    });
+    </script>
+{% block body %}
+
+
+<div class="dataTable_wrapper">
+    <table class="table table-striped table-bordered table-hover dataTables">
+        <thead>
+            <tr>
+                <th>Node ID</th>
+                <th>Flow Id</th>
+                <th>IPv4 Destination</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        {% for key, obj in flows_data['nodes'].iteritems() %}
+            {% for key2 in obj %}
+                {% for key3 in key2['flow-node-inventory:table'] %}
+                    {% for key4 in key3['flow'] %}
+                        <tr>
+                            <td>{{key2['id']}}</td>
+                            <td>{{key4['id']}}</td>
+                            <td>{{key4['match']['ipv4-destination']}}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+</div>
+    <!--<div id="morris-area-chart"></div>-->
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block body %}
+<form role="form">
+    <div class="form-group">
+        <label>Flow</label>
+        <select class="form-control">
+             {% for key, obj in flows_data['nodes'].iteritems() %}
+                {% for key2 in obj %}
+                    {% for key3 in key2['flow-node-inventory:table'] %}
+                        {% for key4 in key3['flow'] %}
+                            <option>{{key2['id']}} - Flow ID ({{key4['id']}}) - {{key4['match']['ipv4-destination']}}</option>
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+             {% endfor %}
+
+        </select>
+    </div>
+    <button type="submit" class="btn btn-danger">Remove</button>
+</form>
+{% endblock %}
