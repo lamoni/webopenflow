@@ -16,6 +16,7 @@
 
     <div class="form-group">
         <label>Node</label>
+        {% if 'nodes' in flows_data %}
         <select name="flow_node" class="form-control">
             {% for key, obj in flows_data['nodes'].iteritems() %}
                 {% for key2 in obj %}
@@ -23,6 +24,9 @@
                 {% endfor %}
             {% endfor %}
         </select>
+        {% else %}
+            <input name="flow_node" class="form-control">
+        {% endif %}
     </div>
     <div class="form-group">
         <label>Flow ID</label>

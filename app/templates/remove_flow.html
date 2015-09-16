@@ -1,22 +1,73 @@
 {% extends "base.html" %}
 
 {% block body %}
-<form role="form">
+<script src="/static/bower_components/jquery-form/jquery.form.js"></script>
+
+<form id="formRemoveFlow" class="form" action="/api/remove_flow" method="POST" role="form">
+    {{ form.hidden_tag() }}
+
     <div class="form-group">
         <label>Flow</label>
-        <select class="form-control">
+        {% if 'nodes' in flows_data %}
+
+        <select id="flow_key" name="flow_key" class="form-control">
+
              {% for key, obj in flows_data['nodes'].iteritems() %}
                 {% for key2 in obj %}
                     {% for key3 in key2['flow-node-inventory:table'] %}
                         {% for key4 in key3['flow'] %}
-                            <option>{{key2['id']}} - Flow ID ({{key4['id']}}) - {{key4['match']['ipv4-destination']}}</option>
+                            <option value="{{key2['id']}}@!@{{key3['id']}}@!@{{key4['id']}}">{{key2['id']}} - Table ID ({{key3['id']}}) - Flow ID ({{key4['id']}})</option>
                         {% endfor %}
                     {% endfor %}
                 {% endfor %}
              {% endfor %}
 
         </select>
+        {% else %}
+            No nodes
+        {% endif %}
     </div>
     <button type="submit" class="btn btn-danger">Remove</button>
+
+    <div class="alert alert-success" id="alertSuccess" style="display:none;">
+
+    </div>
+    <div class="alert alert-danger" id="alertDanger" style="display:none;">
+
+    </div>
+
 </form>
+
+<script>
+    $(document).ready(function() {
+        $('#formRemoveFlow').submit(function(e) {
+            e.preventDefault();
+            var options = {
+                type: 'POST',
+                dataType: 'json',
+                success:  showResponse,
+                resetForm: true
+            };
+
+
+            $(this).ajaxSubmit(options);
+
+            return false;
+        });
+
+
+        function showResponse(data) {
+            if (data.error == 1) {
+                $('#alertSuccess').html('').hide();
+                $('#alertDanger').html(data.message).show();
+                return false;
+            }
+
+                $("#flow_key option:selected").remove();
+                $('#alertDanger').html('').hide();
+                $('#alertSuccess').html(data.message).show();
+
+        }
+    });
+</script>
 {% endblock %}

@@ -1,6 +1,7 @@
 from flask import render_template, flash, redirect, jsonify
 from app import app
 from .forms import AddFlowForm
+from .forms import RemoveFlowForm
 import requests
 
 @app.route('/')
@@ -71,7 +72,7 @@ def api_add_flow():
                             <apply-actions>
                                 <action>
                                    <order>0</order>
-                                   <dec-nw-ttl/>
+                                   <flood-action/>
                                 </action>
                             </apply-actions>
                         </instruction>
@@ -97,6 +98,7 @@ def api_add_flow():
 
 @app.route('/remove_flow')
 def remove_flow():
+    form = RemoveFlowForm()
 
     r = requests.get(
         'http://'+app.config['ODL_SERVER_IP']+':'+app.config['ODL_SERVER_PORT']+'/restconf/config/opendaylight-inventory:nodes/',
@@ -111,5 +113,29 @@ def remove_flow():
         'remove_flow.html',
         page_title='Remove Flow',
         panel_title='Form',
-        flows_data=r.json()
+        flows_data=r.json(),
+        form=form
     )
+
+
+@app.route('/api/remove_flow', methods=['POST'])
+def api_remove_flow():
+
+    form = RemoveFlowForm()
+
+    flow_info = form.flow_key.data.split('@!@')
+
+    if form.validate_on_submit():
+        r = requests.delete(
+            'http://'+app.config['ODL_SERVER_IP']+':'+app.config['ODL_SERVER_PORT']+'/restconf/config/opendaylight-inventory:nodes/node/%s/flow-node-inventory:table/%s/flow/%s/' % (flow_info[0], flow_info[1], flow_info[2]),
+             headers={
+                'accept': 'application/json',
+                'content-type': 'application/xml'
+             },
+             auth=(app.config['ODL_USERNAME'], app.config['ODL_PASSWORD'])
+        )
+
+        if r.status_code == 200:
+            return jsonify({'error': 0, 'message': 'Flow removed!'})
+
+        return jsonify({'error': 1, 'message': 'Unable to remove flow'})

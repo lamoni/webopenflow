@@ -8,3 +8,7 @@ class AddFlowForm(Form):
     flow_priority = StringField('flow_priority')
     flow_destination_prefix = StringField('flow_destination_prefix')
     flow_table_id = StringField('flow_table_id')
+
+
+class RemoveFlowForm(Form):
+    flow_key = StringField('flow_key')

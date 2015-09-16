@@ -19,6 +19,7 @@
     </script>
 {% block body %}
 
+{% if 'nodes' in flows_data %}
 
 <div class="dataTable_wrapper">
     <table class="table table-striped table-bordered table-hover dataTables">
@@ -49,5 +50,8 @@
         </tbody>
     </table>
 </div>
+{% else %}
+    No nodes/flows
+{% endif %}
     <!--<div id="morris-area-chart"></div>-->
 {% endblock %}
