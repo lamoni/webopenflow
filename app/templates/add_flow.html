@@ -18,7 +18,8 @@
         <label>Node</label>
         {% if 'nodes' in flows_data %}
         <select name="flow_node" class="form-control">
-            {% for key, obj in flows_data['nodes'].iteritems() %}
+            {% for key, obj in flows_output_ports['nodes'].iteritems() %}
+
                 {% for key2 in obj %}
                     <option value="{{key2['id']}}">{{key2['id']}}</option>
                 {% endfor %}
@@ -50,6 +51,20 @@
         <input name="flow_destination_prefix" class="form-control" placeholder="IPv4 Prefix">
     </div>
 
+    <div class="form-group">
+        <label>Output Port</label>
+        <select name="flow_output_port" class="form-control">
+
+            {% for key, obj in flows_output_ports['nodes'].iteritems() %}
+                {% for key2 in obj %}
+                    {% for key3 in key2['node-connector'] %}
+                        <option value="{{key3['id']}}">{{key2['id']}} - {{key3['id']}}</option>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+
+        </select>
+    </div>
     <div class="form-group">
         <label>Table ID</label>
         <select name="flow_table_id" class="form-control">

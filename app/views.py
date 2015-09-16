@@ -38,12 +38,27 @@ def add_flow():
          auth=(app.config['ODL_USERNAME'], app.config['ODL_PASSWORD'])
     )
 
+    flows_data = r.json()
+
+    r = requests.get(
+        'http://'+app.config['ODL_SERVER_IP']+':'+app.config['ODL_SERVER_PORT']+'/restconf/operational/opendaylight-inventory:nodes/',
+        headers={
+            'accept': 'application/json',
+            'content-type': 'application/xml'
+         },
+         auth=(app.config['ODL_USERNAME'], app.config['ODL_PASSWORD'])
+    )
+
+
+    flows_output_ports = r.json()
+
     return render_template(
         'add_flow.html',
         page_title='Add Flow',
         panel_title='Form',
         form=form,
-        flows_data=r.json()
+        flows_data=flows_data,
+        flows_output_ports = flows_output_ports
     )
 
 
@@ -72,12 +87,16 @@ def api_add_flow():
                             <apply-actions>
                                 <action>
                                    <order>0</order>
-                                   <flood-action/>
+                                   <output-action>
+                                        <output-node-connector>
+                                            %s
+                                        </output-node-connector>
+                                   </output-action>
                                 </action>
                             </apply-actions>
                         </instruction>
                     </instructions>
-                </flow>""" % (form.flow_priority.data, form.flow_destination_prefix.data, form.flow_id.data, form.flow_table_id.data)
+                </flow>""" % (form.flow_priority.data, form.flow_destination_prefix.data, form.flow_id.data, form.flow_table_id.data, form.flow_output_port.data)
 
         r = requests.put(
                 'http://'+app.config['ODL_SERVER_IP']+':'+app.config['ODL_SERVER_PORT']+'/restconf/config/opendaylight-inventory:nodes/node/%s/table/%s/flow/%s' % (form.flow_node.data, form.flow_table_id.data, form.flow_id.data),
