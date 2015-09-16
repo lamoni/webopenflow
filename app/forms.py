@@ -3,7 +3,7 @@ from wtforms import StringField, BooleanField
 from wtforms.validators import DataRequired
 
 class AddFlowForm(Form):
-    flow_name = StringField('flow_name') #, validators=[DataRequired()])
+    flow_node = StringField('flow_node')
     flow_id = StringField('flow_id')
     flow_priority = StringField('flow_priority')
     flow_destination_prefix = StringField('flow_destination_prefix')

@@ -28,11 +28,21 @@ def index():
 def add_flow():
     form = AddFlowForm()
 
+    r = requests.get(
+        'http://'+app.config['ODL_SERVER_IP']+':'+app.config['ODL_SERVER_PORT']+'/restconf/config/opendaylight-inventory:nodes/',
+        headers={
+            'accept': 'application/json',
+            'content-type': 'application/xml'
+         },
+         auth=(app.config['ODL_USERNAME'], app.config['ODL_PASSWORD'])
+    )
+
     return render_template(
         'add_flow.html',
         page_title='Add Flow',
         panel_title='Form',
-        form=form
+        form=form,
+        flows_data=r.json()
     )
 
 
@@ -69,7 +79,7 @@ def api_add_flow():
                 </flow>""" % (form.flow_priority.data, form.flow_destination_prefix.data, form.flow_id.data, form.flow_table_id.data)
 
         r = requests.put(
-                'http://'+app.config['ODL_SERVER_IP']+':'+app.config['ODL_SERVER_PORT']+'/restconf/config/opendaylight-inventory:nodes/node/openflow:1/table/%s/flow/%s' % (form.flow_table_id.data, form.flow_id.data),
+                'http://'+app.config['ODL_SERVER_IP']+':'+app.config['ODL_SERVER_PORT']+'/restconf/config/opendaylight-inventory:nodes/node/%s/table/%s/flow/%s' % (form.flow_node.data, form.flow_table_id.data, form.flow_id.data),
                  data=xml,
                  headers = {
                     'accept': 'application/json',
