@@ -16,7 +16,7 @@
 
     <div class="form-group">
         <label>Node</label>
-        {% if 'nodes' in flows_data %}
+        {% if 'nodes' in flows_output_ports %}
         <select name="flow_node" class="form-control">
             {% for key, obj in flows_output_ports['nodes'].iteritems() %}
 
