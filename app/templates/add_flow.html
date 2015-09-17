@@ -21,7 +21,7 @@
             {% for key, obj in flows_output_ports['nodes'].iteritems() %}
 
                 {% for key2 in obj %}
-                    <option value="{{key2['id']}}">{{key2['id']}}</option>
+                    <option value="{{key2['id']}}">{{key2['flow-node-inventory:ip-address']}} ({{key2['id']}})</option>
                 {% endfor %}
             {% endfor %}
         </select>
