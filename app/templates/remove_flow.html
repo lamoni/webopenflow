@@ -27,7 +27,7 @@
             No nodes
         {% endif %}
     </div>
-    <button type="submit" class="btn btn-danger">Remove</button>
+    <button id="buttonSubmit" type="submit" data-loading-text="Removing..." class="btn btn-danger">Remove</button>
 
     <div class="alert alert-success" id="alertSuccess" style="display:none;">
 
@@ -41,6 +41,10 @@
 <script>
     $(document).ready(function() {
         $('#formRemoveFlow').submit(function(e) {
+            $('#alertSuccess').html('').hide();
+            $('#alertDanger').html('').hide();
+            $('#buttonSubmit').button('loading');
+
             e.preventDefault();
             var options = {
                 type: 'POST',
@@ -66,6 +70,8 @@
                 $("#flow_key option:selected").remove();
                 $('#alertDanger').html('').hide();
                 $('#alertSuccess').html(data.message).show();
+                $('#buttonSubmit').button('reset');
+
 
         }
     });

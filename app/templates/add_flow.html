@@ -31,7 +31,7 @@
     </div>
     <div class="form-group">
         <label>Flow ID</label>
-        <input name="flow_id" class="form-control" placeholder="ID">
+        <input id="textFlowID" name="flow_id" class="form-control" placeholder="ID">
     </div>
 
     <div class="form-group">
@@ -76,7 +76,7 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-success">Add</button>
+    <button id="buttonSubmit" type="submit" data-loading-text="Pushing..." class="btn btn-success">Add</button>
     <button type="reset" class="btn btn-danger">Reset</button>
 
     <div class="alert alert-success" id="alertSuccess" style="display:none;">
@@ -89,6 +89,10 @@
 <script>
     $(document).ready(function() {
         $('#formAddFlow').submit(function(e) {
+            $('#alertSuccess').html('').hide();
+            $('#alertDanger').html('').hide();
+            $('#buttonSubmit').button('loading');
+
             e.preventDefault();
             var options = {
                 type: 'POST',
@@ -110,8 +114,11 @@
                 return false;
             }
 
-                $('#alertDanger').html('').hide();
-                $('#alertSuccess').html(data.message).show();
+            $('#alertDanger').html('').hide();
+            $('#alertSuccess').html(data.message).show();
+            $('#buttonSubmit').button('reset');
+
+            $('#textFlowID').val(parseInt($('#textFlowID').val()) + 1);
 
         }
     });

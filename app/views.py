@@ -16,7 +16,7 @@ def index():
          },
          auth=(app.config['ODL_USERNAME'], app.config['ODL_PASSWORD'])
     )
-
+    pprint.pprint(r.json())
     return render_template(
         'index.html',
         page_title='Dashboard',

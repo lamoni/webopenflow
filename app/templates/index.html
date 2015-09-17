@@ -26,8 +26,9 @@
         <thead>
             <tr>
                 <th>Node ID</th>
-                <th>Flow Id</th>
-                <th>IPv4 Destination</th>
+                <th>Flow ID</th>
+                <th>Input Port</th>
+                <th>Output Port</th>
             </tr>
         </thead>
         <tbody>
@@ -39,7 +40,9 @@
                         <tr>
                             <td>{{key2['id']}}</td>
                             <td>{{key4['id']}}</td>
-                            <td>{{key4['match']['ipv4-destination']}}</td>
+                            <td>{{key4['match']['in-port']}}</td>
+                            <td>{{key4['instructions']['instruction'][0]['apply-actions']['action'][0]['output-action']['output-node-connector']}}</td>
+
                         </tr>
                     {% endfor %}
                 {% endfor %}
