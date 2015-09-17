@@ -6,8 +6,7 @@ class AddFlowForm(Form):
     flow_node = StringField('flow_node')
     flow_id = StringField('flow_id')
     flow_priority = StringField('flow_priority')
-    flow_destination_prefix = StringField('flow_destination_prefix')
-    flow_table_id = StringField('flow_table_id')
+    flow_input_port = StringField('flow_input_port')
     flow_output_port = StringField('flow_output_port')
 
 class RemoveFlowForm(Form):

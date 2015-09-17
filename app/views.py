@@ -71,15 +71,10 @@ def api_add_flow():
                 <flow xmlns="urn:opendaylight:flow:inventory">
                     <priority>%s</priority>
                     <match>
-                        <ethernet-match>
-                            <ethernet-type>
-                                <type>2048</type>
-                            </ethernet-type>
-                        </ethernet-match>
-                        <ipv4-destination>%s</ipv4-destination>
+                        <in-port>%s</in-port>
                     </match>
                     <id>%s</id>
-                    <table_id>%s</table_id>
+                    <table_id>1</table_id>
                     <instructions>
                         <instruction>
                             <order>0</order>
@@ -95,10 +90,10 @@ def api_add_flow():
                             </apply-actions>
                         </instruction>
                     </instructions>
-                </flow>""" % (form.flow_priority.data, form.flow_destination_prefix.data, form.flow_id.data, form.flow_table_id.data, form.flow_output_port.data)
+                </flow>""" % (form.flow_priority.data, form.flow_input_port.data, form.flow_id.data, form.flow_output_port.data)
 
         r = requests.put(
-                'http://'+app.config['ODL_SERVER_IP']+':'+app.config['ODL_SERVER_PORT']+'/restconf/config/opendaylight-inventory:nodes/node/%s/table/%s/flow/%s' % (form.flow_node.data, form.flow_table_id.data, form.flow_id.data),
+                'http://'+app.config['ODL_SERVER_IP']+':'+app.config['ODL_SERVER_PORT']+'/restconf/config/opendaylight-inventory:nodes/node/%s/table/1/flow/%s' % (form.flow_node.data, form.flow_id.data),
                  data=xml,
                  headers = {
                     'accept': 'application/json',

@@ -37,18 +37,28 @@
     <div class="form-group">
         <label>Priority</label>
         <select name="flow_priority" class="form-control">
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+            <option value="25">25</option>
+            <option value="20">20</option>
+            <option value="15">15</option>
+            <option value="10">10</option>
             <option value="5">5</option>
+            <option value="0">0</option>
         </select>
     </div>
 
     <div class="form-group">
-        <label>Destination Prefix</label>
-        <input name="flow_destination_prefix" class="form-control" placeholder="IPv4 Prefix">
+        <label>Input Port</label>
+        <select name="flow_input_port" class="form-control">
+
+            {% for key, obj in flows_output_ports['nodes'].iteritems() %}
+                {% for key2 in obj %}
+                    {% for key3 in key2['node-connector'] %}
+                        <option value="{{key3['id']}}">{{key2['flow-node-inventory:ip-address']}} - {{key3['flow-node-inventory:name']}}</option>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+
+        </select>
     </div>
 
     <div class="form-group">
@@ -65,18 +75,6 @@
 
         </select>
     </div>
-    <div class="form-group">
-        <label>Table ID</label>
-        <select name="flow_table_id" class="form-control">
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-    </div>
-
 
     <button type="submit" class="btn btn-success">Add</button>
     <button type="reset" class="btn btn-danger">Reset</button>
@@ -95,8 +93,7 @@
             var options = {
                 type: 'POST',
                 dataType: 'json',
-                success:       showResponse,
-                resetForm: true
+                success:       showResponse
             };
 
 
