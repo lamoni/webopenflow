@@ -51,7 +51,6 @@ def add_flow():
 
 
     flows_output_ports = r.json()
-
     return render_template(
         'add_flow.html',
         page_title='Add Flow',

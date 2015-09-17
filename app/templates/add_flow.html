@@ -58,7 +58,7 @@
             {% for key, obj in flows_output_ports['nodes'].iteritems() %}
                 {% for key2 in obj %}
                     {% for key3 in key2['node-connector'] %}
-                        <option value="{{key3['id']}}">{{key2['id']}} - {{key3['flow-node-inventory:name']}}</option>
+                        <option value="{{key3['id']}}">{{key2['flow-node-inventory:ip-address']}} - {{key3['flow-node-inventory:name']}}</option>
                     {% endfor %}
                 {% endfor %}
             {% endfor %}
